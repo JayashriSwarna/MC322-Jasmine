@@ -1,4 +1,4 @@
-package mc322;
+package lab02;
 
 import java.util.*;
 import java.time.LocalDateTime;  
