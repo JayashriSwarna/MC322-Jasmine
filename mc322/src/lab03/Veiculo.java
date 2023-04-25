@@ -47,5 +47,13 @@ public class Veiculo {
     public void setAnoFabricacao(int anoFabricacao) {
         this.anoFabricacao = anoFabricacao;
     }
+
+    public String toString(){
+        String str = "placa do veiculo: " + placa + "\n"
+                    + "marca: " + marca + "\n"
+                    + "modelo: " + modelo + "\n"
+                    + "ano de fabricacao: " + anoFabricacao + "\n";
+        return str;
+    }
     
 }

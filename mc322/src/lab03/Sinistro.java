@@ -90,5 +90,15 @@ public class Sinistro {
         Random random_id = new Random();
         return random_id.nextInt(1000000001);
     }
+
+    public String toString(){
+        String str = "id do sinistro: " + id + "\n"
+                    + "data: " + data + "\n"
+                    + "endereco: " + endereco + "\n"
+                    + "seguradora: " + seguradora.getNome() + "\n"
+                    + "veiculo (placa): " + veiculo.getPlaca() + "\n"
+                    + "nome do cliente: " + cliente.getNome() + "\n";
+        return str;
+    }
     
 }

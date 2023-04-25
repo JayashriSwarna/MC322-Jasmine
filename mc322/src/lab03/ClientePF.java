@@ -2,6 +2,7 @@ package lab03;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter; 
 
 public class ClientePF extends Cliente{
     private String cpf;
@@ -79,7 +80,7 @@ public class ClientePF extends Cliente{
 
     // Demais metodos
 
-    public static boolean validarCPF(String cpf){
+    public boolean validarCPF(String cpf){
         String replaceCPF = cpf.replaceAll("\\p{P}", "");
 
         if(replaceCPF.length() != 11)
@@ -120,6 +121,18 @@ public class ClientePF extends Cliente{
         }     
 
         return true;
+    }
+
+    @Override
+    public String toString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String str = "cpf do cliente: " + cpf + "\n"
+                    + "genero: " + genero + "\n"
+                    + "data da licenca: " + dataLicenca.format(formatter) + "\n"
+                    + "educacao: " + educacao + "\n"
+                    + "data de nascimento: " + dataNascimento.format(formatter) + "\n"
+                    + "classe economica: " + classeEconomica + "\n";
+        return str;
     }
     
 }

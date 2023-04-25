@@ -40,5 +40,20 @@ public class Cliente {
     public void setListaVeiculos(ArrayList<Veiculo> listaVeiculos) {
         this.listaVeiculos = listaVeiculos;
     }
+
+    public String toString(){
+        String str = "nome do cliente: " + nome + "\n"
+                    + "endereco: " + endereco + "\n"
+                    + "Lista de veiculos do cliente:" + "\n";
+
+        int contador = 1;
+
+        for(Veiculo veiculo : listaVeiculos){
+            // talvez aqui de erro com o int
+            str = str + "Veiculo " + contador + "\n" + veiculo.toString() + "\n";
+            contador++;
+        }
+        return str;
+    }
     
 }

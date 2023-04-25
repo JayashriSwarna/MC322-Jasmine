@@ -2,6 +2,7 @@ package lab03;
 
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ClientePJ extends Cliente{
     private String cnpj;
@@ -35,7 +36,7 @@ public class ClientePJ extends Cliente{
 
 
     // Demais metodos
-    public static boolean validarCNPJ(String cnpj){
+    public boolean validarCNPJ(String cnpj){
         cnpj = cnpj.replaceAll("\\p{P}", "");
 
         if(cnpj.length() != 14)
@@ -69,6 +70,14 @@ public class ClientePJ extends Cliente{
         }
 
         return true;
+    }
+
+    @Override
+    public String toString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String str = "cnpj do cliente: " + cnpj + "\n"
+                    + "data de fundacao: " + dataFundacao.format(formatter) + "\n";
+        return str;
     }
 
 }

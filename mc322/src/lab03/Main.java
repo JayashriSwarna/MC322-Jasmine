@@ -10,6 +10,10 @@ public class Main {
 
         System.out.println("Seja bem vinde ao sistema de cadastro de clientes e de sinistros (SCCS)");
         System.out.println("Lamentamos o motivo de estar aqui. :(");
+        System.out.print("Para prosseguir, digite se você é 'PF' ou 'PJ': ");
+        String tipoCliente = scanner.nextLine();
+
+
         System.out.print("Para prosseguir, digite seu CPF (em uma unica linha): ");
         String cpf = scanner.nextLine();
 
