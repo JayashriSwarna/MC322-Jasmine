@@ -8,7 +8,7 @@ public class Cliente {
     private ArrayList<Veiculo> listaVeiculos;
 
     // Construtor
-    public Cliente(String nome, String endereco, ArrayList<Veiculo> listaVeiculos) {
+    public Cliente(String nome, String endereco) {
         this.nome = nome;
         this.endereco = endereco;
         listaVeiculos = new ArrayList<Veiculo>();
@@ -41,6 +41,10 @@ public class Cliente {
         this.listaVeiculos = listaVeiculos;
     }
 
+    public void cadastrarVeiculo(Veiculo veiculo){
+        this.listaVeiculos.add(veiculo);
+    }
+
     public String toString(){
         String str = "nome do cliente: " + nome + "\n"
                     + "endereco: " + endereco + "\n"
@@ -49,7 +53,6 @@ public class Cliente {
         int contador = 1;
 
         for(Veiculo veiculo : listaVeiculos){
-            // talvez aqui de erro com o int
             str = str + "Veiculo " + contador + "\n" + veiculo.toString() + "\n";
             contador++;
         }

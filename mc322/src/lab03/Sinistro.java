@@ -12,8 +12,8 @@ public class Sinistro {
 
 
     // Construtor
-    public Sinistro(int id, String data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
-        this.id = id;
+    public Sinistro(String data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente) {
+        this.id = Sinistro.generateId();
         this.data = data;
         this.endereco = endereco;
         this.seguradora = seguradora;

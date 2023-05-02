@@ -11,8 +11,7 @@ public class Seguradora {
     private ArrayList<Cliente> listaClientes;
 
     // Construtor
-    public Seguradora(String nome, String telefone, String email, String endereco, ArrayList<Sinistro> listaSinistros,
-            ArrayList<Cliente> listaClientes) {
+    public Seguradora(String nome, String telefone, String email, String endereco) {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
@@ -77,13 +76,13 @@ public class Seguradora {
         // retorna false se cnpj ou cpf forem invalidos
         if(cliente instanceof ClientePF){
             ClientePF cliente_pf = (ClientePF) cliente;
-            if(!(cliente_pf.validarCPF(cliente_pf.getCpf()))){
+            if(!(ClientePF.validarCPF(cliente_pf.getCpf()))){
                 return false;
             }
         }
         else if(cliente instanceof ClientePJ){
             ClientePJ cliente_pj = (ClientePJ) cliente;
-            if(!(cliente_pj.validarCNPJ(cliente_pj.getCnpj()))){
+            if(!(ClientePJ.validarCNPJ(cliente_pj.getCnpj()))){
                 return false;
             }
         }
@@ -126,7 +125,7 @@ public class Seguradora {
         }
 
         if(cliente_existe){
-            this.listaClientes.remove(posicao_cliente);
+            this.listaClientes.remove(posicao_cliente - 1);
             return true;
         }
         else{
@@ -136,35 +135,39 @@ public class Seguradora {
 
 
     public void listarClientes(String tipoCliente){
+        // lista clientes chamando seu metodo toString()
+
         System.out.println("Lista de Clientes:");
         for(Cliente cliente : this.listaClientes){
             if(cliente instanceof ClientePF && tipoCliente.equals("PF")){
                 ClientePF cliente_pf = (ClientePF) cliente;
-                cliente_pf.toString();
+                System.out.print(cliente_pf.toString());
             }
             else if(cliente instanceof ClientePJ && tipoCliente.equals("PJ")){
                 ClientePJ cliente_pj = (ClientePJ) cliente;
-                cliente_pj.toString();
+                System.out.print(cliente_pj.toString());
             }
+            System.out.println();
         }
+        System.out.println();
     }
 
-    public boolean gerarSinistro(String data, String endereco, Seguradora seguradora, Veiculo veiculo, Cliente cliente){
+    public boolean gerarSinistro(Sinistro sinistro){
         // false: cliente nao existe ou veiculo nao e do cliente
         // cliente nao existe:
         boolean existe_cliente = false, existe_veiculo = false;
 
         for(Cliente cliente_na_lista : this.listaClientes){
-            if(cliente_na_lista instanceof ClientePF && cliente instanceof ClientePF){
+            if(cliente_na_lista instanceof ClientePF && sinistro.getCliente() instanceof ClientePF){
                 ClientePF cliente_pf_na_lista = (ClientePF) cliente_na_lista;
-                ClientePF cliente_pf = (ClientePF) cliente;
+                ClientePF cliente_pf = (ClientePF) sinistro.getCliente();
                 if(cliente_pf_na_lista.getCpf().equals(cliente_pf.getCpf())){
                     existe_cliente = true;
                 }
             }
-            else if(cliente_na_lista instanceof ClientePJ && cliente instanceof ClientePJ){
+            else if(cliente_na_lista instanceof ClientePJ && sinistro.getCliente() instanceof ClientePJ){
                 ClientePJ cliente_pj_na_lista = (ClientePJ) cliente_na_lista;
-                ClientePJ cliente_pj = (ClientePJ) cliente;
+                ClientePJ cliente_pj = (ClientePJ) sinistro.getCliente();
                 if(cliente_pj_na_lista.getCnpj().equals(cliente_pj.getCnpj())){
                     existe_cliente = true;
                 }
@@ -172,8 +175,8 @@ public class Seguradora {
         }
 
         // veiculo nao esta listado para aquele cliente:
-        for(Veiculo veiculo_na_lista : cliente.getListaVeiculos()){
-            if(veiculo_na_lista.getPlaca().equals(veiculo.getPlaca())){
+        for(Veiculo veiculo_na_lista : sinistro.getCliente().getListaVeiculos()){
+            if(veiculo_na_lista.getPlaca().equals(sinistro.getVeiculo().getPlaca())){
                 existe_veiculo = true;
             }
         }
@@ -182,11 +185,6 @@ public class Seguradora {
             return false;
         }
 
-        // passar seguradora??
-
-        int id_sinistro = Sinistro.generateId();
-
-        Sinistro sinistro = new Sinistro(id_sinistro, data, endereco, seguradora, veiculo, cliente);
         this.listaSinistros.add(sinistro);
 
         return true;
@@ -209,8 +207,9 @@ public class Seguradora {
     public void listarSinistros(){
         // imprimir sinistros
         for(Sinistro sinistro : this.listaSinistros){
-            sinistro.toString();
+            System.out.print(sinistro.toString());
         }
+        System.out.println();
     }
 
 }

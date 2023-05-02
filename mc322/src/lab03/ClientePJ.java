@@ -1,6 +1,5 @@
 package lab03;
 
-import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -9,8 +8,8 @@ public class ClientePJ extends Cliente{
     private LocalDate dataFundacao;
     
     // Construtor
-    public ClientePJ(String nome, String endereco, ArrayList<Veiculo> listaVeiculos, String cnpj, LocalDate dataFundacao) {
-        super(nome, endereco, listaVeiculos);
+    public ClientePJ(String nome, String endereco, String cnpj, LocalDate dataFundacao) {
+        super(nome, endereco);
         this.cnpj = cnpj;
         this.dataFundacao = dataFundacao;
     }
@@ -36,7 +35,11 @@ public class ClientePJ extends Cliente{
 
 
     // Demais metodos
-    public boolean validarCNPJ(String cnpj){
+    public static boolean validarCNPJ(String cnpj){
+        /*
+         Esta funcao aplica o algoritmo de validar cnpj.
+        */
+
         cnpj = cnpj.replaceAll("\\p{P}", "");
 
         if(cnpj.length() != 14)
@@ -46,20 +49,23 @@ public class ClientePJ extends Cliente{
         int[] coeficientes = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
 
         for(int i = 0; i < 12; i++){
-            soma1 += Integer.valueOf(cnpj.charAt(i)) * coeficientes[i + 1];
-            soma2 += Integer.valueOf(cnpj.charAt(i)) * coeficientes[i];
+            soma1 += (Integer.valueOf(cnpj.charAt(i)) - 48) * coeficientes[i + 1];
+            soma2 += (Integer.valueOf(cnpj.charAt(i)) - 48) * coeficientes[i];
         }
 
-        soma2 += Integer.valueOf(cnpj.charAt(12));
+        soma2 += Integer.valueOf(cnpj.charAt(12)) - 48;
 
         int valor = soma1, pos = 12;
 
         while(valor != -1){
-            if(valor % 11 == 0 || valor % 11 == 1)
-                if(Integer.valueOf(cnpj.charAt(pos)) != 0)
+            if(valor % 11 == 0 || valor % 11 == 1){
+                if(Integer.valueOf(cnpj.charAt(pos)) - 48 != 0){
                     return false;
-            else if(Integer.valueOf(cnpj.charAt(pos)) != 11 - (valor % 11))
+                }
+            }
+            else if(Integer.valueOf(cnpj.charAt(pos)) - 48 != 11 - (valor % 11)){
                 return false;
+            }
 
             if(valor == soma1){
                 valor = soma2;

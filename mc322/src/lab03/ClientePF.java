@@ -1,6 +1,5 @@
 package lab03;
 
-import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter; 
 
@@ -12,11 +11,10 @@ public class ClientePF extends Cliente{
     private LocalDate dataNascimento;
     private String classeEconomica;
 
-    public ClientePF(String nome, String endereco, ArrayList<Veiculo> listaVeiculos, String cpf, String genero,
-                    LocalDate dataLicenca, String educacao, LocalDate dataNascimento, String classeEconomica) {
+    public ClientePF(String nome, String endereco, String cpf, String genero, LocalDate dataLicenca, String educacao, LocalDate dataNascimento, String classeEconomica) {
         
         // chamando construtor da superclasse
-        super(nome, endereco, listaVeiculos);
+        super(nome, endereco);
 
         this.cpf = cpf;
         this.genero = genero;
@@ -80,7 +78,11 @@ public class ClientePF extends Cliente{
 
     // Demais metodos
 
-    public boolean validarCPF(String cpf){
+    public static boolean validarCPF(String cpf){
+        /*
+         Esta funcao aplica o algoritmo de validar cpf.
+        */
+
         String replaceCPF = cpf.replaceAll("\\p{P}", "");
 
         if(replaceCPF.length() != 11)
@@ -96,28 +98,34 @@ public class ClientePF extends Cliente{
         
         int verificador1 = 10, verificador2 = 11, soma1 = 0, soma2 = 0; 
         for(int i = 0; i < 9; i++){
-            soma1 += Integer.valueOf(replaceCPF.charAt(i)) * verificador1;
-            soma2 += Integer.valueOf(replaceCPF.charAt(i)) * verificador2;
+            soma1 += (Integer.valueOf(replaceCPF.charAt(i)) - 48) * verificador1;
+            soma2 += (Integer.valueOf(replaceCPF.charAt(i)) - 48) * verificador2;
 
             verificador1--;
             verificador2--;
         }
 
-        soma2 += Integer.valueOf(replaceCPF.charAt(9)) * verificador2;
+        soma2 += (Integer.valueOf(replaceCPF.charAt(9)) - 48) * verificador2;
 
-        int valor = soma1;
+        int valor = soma1, validador = 9;
 
         while(valor != -1){
-            if(valor % 11 == 0 || valor % 11 == 1)
-                if(Integer.valueOf(replaceCPF.charAt(9)) != 0)
+            if(valor % 11 == 0 || valor % 11 == 1){
+                if((Integer.valueOf(replaceCPF.charAt(validador)) - 48) != 0){
                     return false;
-            else if(Integer.valueOf(replaceCPF.charAt(9)) != 11 - (valor % 11))
+                }
+            }
+            else if((Integer.valueOf(replaceCPF.charAt(validador)) - 48) != 11 - (valor % 11)){
                 return false;
+            }
 
-            if(valor == soma1)
+            if(valor == soma1){
                 valor = soma2;
-            else
+                validador++;
+            }
+            else{
                 valor = -1;
+            }
         }     
 
         return true;

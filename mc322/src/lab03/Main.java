@@ -1,70 +1,134 @@
 package lab03;
 
 import java.util.*;
-import java.time.LocalDateTime;  
-import java.time.format.DateTimeFormatter;  
+import java.time.LocalDate; 
+import java.time.format.DateTimeFormatter;
 
 public class Main {
     public static void main(String[] args){
+        Seguradora seguradora = new Seguradora("Capixaba Seguro", "(27)3333-3333", "capixaba.seguros@gmail.com", "Rua Carlos Lindenberg, 999");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Seja bem vinde ao sistema de cadastro de clientes e de sinistros (SCCS)");
         System.out.println("Lamentamos o motivo de estar aqui. :(");
-        System.out.print("Para prosseguir, digite se você é 'PF' ou 'PJ': ");
-        String tipoCliente = scanner.nextLine();
+        
 
+        System.out.println("CADASTRO DE PESSOA FISICA");
 
-        System.out.print("Para prosseguir, digite seu CPF (em uma unica linha): ");
-        String cpf = scanner.nextLine();
+        System.out.print("Para prosseguir, digite o CPF (em uma unica linha): ");
+        String cpf1 = scanner.nextLine();
 
-        while(!(Cliente.validarCPF(cpf))){
-            System.out.print("Seu cpf eh invalido. Digite novamente: ");
-            cpf = scanner.nextLine();
+        while(!(ClientePF.validarCPF(cpf1))){
+            System.out.print("O cpf eh invalido. Digite novamente: ");
+            cpf1 = scanner.nextLine();
         }
 
-        System.out.println("Perfeito! Agora digite seus outros dados.");
-        System.out.print("Nome: ");
-        String nomeCliente = scanner.nextLine();
-        System.out.print("Data de nascimento: ");
-        String dataNascimentoCliente = scanner.nextLine();
-        System.out.print("Idade: ");
-        String idadeCliente = scanner.nextLine();
-        System.out.print("Endereco: ");
-        String enderecoCliente = scanner.nextLine();
+        System.out.println("Agora vamos cadastrar um cliente.");
+
+        LocalDate dataLicenca1;
+        dataLicenca1 = LocalDate.parse("20/12/2021", formatter);
+        LocalDate dataNascimento1;
+        dataNascimento1 = LocalDate.parse("10/06/2003", formatter);
+
+        ClientePF cliente1 = new ClientePF("Jasmine", "Av 2", cpf1, "feminino", dataLicenca1, "ensino superior incompleto", dataNascimento1, "media");
+
+        seguradora.cadastrarCliente(cliente1);
+
+        System.out.println("Agora vamos remover este cliente.");
+
+        seguradora.removerCliente("Jasmine");
 
 
-        Cliente cliente = new Cliente(nomeCliente, cpf, dataNascimentoCliente, idadeCliente, enderecoCliente);
-        int id_sinistro = Sinistro.generateId();
 
-        System.out.println("Certo, " + cliente.getNome() + ". O id do seu sinistro eh: " + id_sinistro);
-        System.out.print("Digite o local do acidente: ");
-        String enderecoSinistro = scanner.nextLine();
+        System.out.println("Agora vamos cadastrar um cliente do tipo pessoa fisica.");
 
-        String data = java.time.LocalDate.now().toString();
-        Sinistro sinistro = new Sinistro(id_sinistro, data, enderecoSinistro);
+        System.out.print("Digite o CPF (em uma unica linha): ");
+        String cpf2 = scanner.nextLine();
 
-        System.out.println("Seguem as informacoes a respeito de seu sinistro cadastrado:");
-        System.out.println("ID: " + sinistro.getId());
-        System.out.println("Data: " + data);
-        System.out.println("Endereco: " + sinistro.getEndereco());
+        while(!(ClientePF.validarCPF(cpf2))){
+            System.out.print("O cpf eh invalido. Digite novamente: ");
+            cpf2 = scanner.nextLine();
+        }
 
-        System.out.println();
+        LocalDate dataLicenca2;
+        dataLicenca2 = LocalDate.parse("20/12/1995", formatter);
+        LocalDate dataNascimento2;
+        dataNascimento2 = LocalDate.parse("11/06/1979", formatter);
 
-        Seguradora seguradora = new Seguradora("Capixaba Seguro", "(27)3333-3333", "capixaba.seguros@gmail.com", "Rua Carlos Lindenberg, 999");
-        Veiculo veiculo = new Veiculo("BMW1A13", "BMW", "320i");
+        ClientePF cliente2 = new ClientePF("Vanessa", "Av 1", cpf2, "feminino", dataLicenca2, "doutorado", dataNascimento2, "alta");
 
-        System.out.println("Seguem as informacoes a respeito de seu veiculo e da seguradora cadastrados:");
+        seguradora.cadastrarCliente(cliente2);
 
-        System.out.println("Seguradora: " + seguradora.getNome());
-        System.out.println("Telefone da Seguradora: " + seguradora.getTelefone());
-        System.out.println("E-mail da Seguradora: " + seguradora.getEmail());
-        System.out.println("Endereco da Seguradora: " + seguradora.getEndereco());
 
-        System.out.println();
+        System.out.println("Agora vamos cadastrar uma pessoa juridica.");
 
-        System.out.println("Placa do veiculo: " + veiculo.getPlaca());
-        System.out.println("Marca do veiculo: " + veiculo.getMarca());
-        System.out.println("Modelo do veiculo: " + veiculo.getModelo());
+        System.out.print("Para prosseguir, digite o CNPJ (em uma unica linha): ");
+        String cnpj = scanner.nextLine();
+
+        while(!(ClientePJ.validarCNPJ(cnpj))){
+            System.out.print("Seu cnpj eh invalido. Digite novamente: ");
+            cnpj = scanner.nextLine();
+        }
+        
+        LocalDate dataFundacao1;
+        dataFundacao1 = LocalDate.parse("20/12/1998", formatter);
+
+        ClientePJ cliente3 = new ClientePJ("MFPU Ltda", "IC 3", cnpj, dataFundacao1);
+
+        seguradora.cadastrarCliente(cliente3);
+
+
+
+        System.out.println("Agora vamos adicionar um veiculo ao cliente PF.");
+
+        Veiculo carro1 = new Veiculo("AAA1111", "Honda", "HRV", 2019);
+
+        cliente2.cadastrarVeiculo(carro1);
+
+
+        System.out.println("Agora vamos adicionar um veiculo ao cliente PJ.");
+
+        Veiculo carro2 = new Veiculo("BBB2222", "Nissan", "Versa", 2012);
+
+        cliente3.cadastrarVeiculo(carro2);
+
+
+
+        System.out.println("Agora vamos gerar um sinistro.");
+        Sinistro sinistro = new Sinistro("11/11/2011", "Av. 3", seguradora, carro1, cliente2);
+        seguradora.gerarSinistro(sinistro);
+
+
+        System.out.println("Agora vamos listar os clientes do tipo pessoa fisica (PF) da seguradora.");
+        seguradora.listarClientes("PF");
+
+        System.out.println("Agora vamos visualizar se existe o sinistro de um cliente");
+        if(seguradora.visualizarSinistro("Vanessa") == true){
+            System.out.println("O sinistro existe!");
+            System.out.println();
+        }
+
+        System.out.println("Agora vamos listar os sinistros da seguradora");
+        seguradora.listarSinistros();
+
+        Cliente clienteGenerico = new Cliente("Generico", "Av Generica");
+        clienteGenerico.cadastrarVeiculo(carro2);
+
+
+        System.out.println("Agora vamos imprimir os metodos toString() de cada classe.");
+        System.out.println("Sinistro:");
+        System.out.println(sinistro.toString());
+        System.out.println("Cliente:");
+        System.out.println(clienteGenerico.toString());
+        System.out.println("Cliente PF:");
+        System.out.println(cliente2.toString());
+        System.out.println("Cliente PJ");
+        System.out.println(cliente3.toString());
+        System.out.println("Veiculo:");
+        System.out.println(carro1.toString());
 
         scanner.close();
     }
