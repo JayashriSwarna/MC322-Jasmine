@@ -1,0 +1,101 @@
+package lab04;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class ClientePJ extends Cliente{
+    private final String cnpj;
+    private LocalDate dataFundacao;
+    private int qtdeFuncionarios;
+    
+    // Construtor
+    public ClientePJ(String nome, String endereco, String cnpj, LocalDate dataFundacao) {
+        super(nome, endereco);
+        this.cnpj = cnpj;
+        this.dataFundacao = dataFundacao;
+    }
+
+
+    // Getters and Setters
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    /*
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+    */
+
+    public LocalDate getDataFundacao() {
+        return dataFundacao;
+    }
+
+    public void setDataFundacao(LocalDate dataFundacao) {
+        this.dataFundacao = dataFundacao;
+    }
+
+
+    // Demais metodos
+    // public static boolean validarCNPJ(String cnpj){
+    //     /*
+    //      Esta funcao aplica o algoritmo de validar cnpj.
+    //     */
+
+    //     cnpj = cnpj.replaceAll("\\p{P}", "");
+
+    //     if(cnpj.length() != 14)
+    //         return false;
+
+    //     int soma1 = 0, soma2 = 0;
+    //     int[] coeficientes = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+
+    //     for(int i = 0; i < 12; i++){
+    //         soma1 += (Integer.valueOf(cnpj.charAt(i)) - 48) * coeficientes[i + 1];
+    //         soma2 += (Integer.valueOf(cnpj.charAt(i)) - 48) * coeficientes[i];
+    //     }
+
+    //     soma2 += Integer.valueOf(cnpj.charAt(12)) - 48;
+
+    //     int valor = soma1, pos = 12;
+
+    //     while(valor != -1){
+    //         if(valor % 11 == 0 || valor % 11 == 1){
+    //             if(Integer.valueOf(cnpj.charAt(pos)) - 48 != 0){
+    //                 return false;
+    //             }
+    //         }
+    //         else if(Integer.valueOf(cnpj.charAt(pos)) - 48 != 11 - (valor % 11)){
+    //             return false;
+    //         }
+
+    //         if(valor == soma1){
+    //             valor = soma2;
+    //             pos++;
+    //         }
+    //         else
+    //             valor = -1;
+    //     }
+
+    //     return true;
+    // }
+
+
+    public double calculaScore(){
+        // Este metodo calcula o score de um cliente do tipo PJ.
+        int quantidadeCarros = this.getListaVeiculos().size();
+        return CalcSeguro.VALOR_BASE.getValor() * (1 + (this.qtdeFuncionarios / 100)) * quantidadeCarros;
+    }
+
+
+    @Override
+    public String toString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String str = "cnpj do cliente: " + cnpj + "\n"
+                    + "data de fundacao: " + dataFundacao.format(formatter) + "\n"
+                    + "quantidade de funcionarios: " + qtdeFuncionarios + "\n";
+        return str;
+    }
+
+}
